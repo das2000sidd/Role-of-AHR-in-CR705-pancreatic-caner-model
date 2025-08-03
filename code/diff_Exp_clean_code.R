@@ -36,8 +36,8 @@ mutant_samples <- setNames(lapply(
 
 
 combined_ahrko <- do.call(cbind, 
-                          mutant_samples
-                          );
+	mutant_samples
+	);
 
 colnames(combined_ahrko) <- paste0("AHRKO",1:5);
 
@@ -61,9 +61,9 @@ condition_df$condition <- as.factor(condition_df$condition);
 
 
 dds <- DESeqDataSetFromMatrix(countData = all_counts_combined,
-                             colData = condition_df,
-                             design = ~ condition
-                             );
+	colData = condition_df,
+	design = ~ condition
+	);
 
 
 
@@ -72,16 +72,15 @@ dds <- estimateSizeFactors(dds);
 
 
 vsd <- vst(dds, 
-           blind = FALSE
-           );
+	blind = FALSE
+	);
 
 head(assay(vsd), 3);
 
 ###PCA plot***
 
 pca.plot <- plotPCA(vsd, 
-intgroup = c("condition")
-) + ggtitle("PCA by genotype");
+	intgroup = c("condition")) + ggtitle("PCA by genotype");
 
 
 ## MDS plot using the VST data
@@ -97,11 +96,11 @@ dds <- DESeq(dds);
 
 ## Calling result to get differential expression table
 res_AHRKO_vs_WT <- results(dds, 
-contrast = c("condition","AHRKO","WT"),
-pAdjustMethod = "BH",
-cooksCutoff = FALSE,
-independentFiltering = FALSE
-);
+	contrast = c("condition","AHRKO","WT"),
+	pAdjustMethod = "BH",
+	cooksCutoff = FALSE,
+	independentFiltering = FALSE
+	);
 
 
 res_AHRKO_vs_WT_df <- as.data.frame(res_AHRKO_vs_WT);
