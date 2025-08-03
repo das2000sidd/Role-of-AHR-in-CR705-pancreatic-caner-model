@@ -6,7 +6,7 @@ library(dplyr);
 library(ggplot2);
 
 
-
+## read in counts table for plotting MA plot and heatmap and DE table
 norm_counts <- read.csv(file = "WT_vs_AHRKO_Normalised_Expression_Table.csv",
                         header = T,
                         stringsAsFactors = F);
@@ -17,10 +17,12 @@ ahrko <- read.csv(file="WT_vs_AHRKO_All_genes_differential_Expression_Table.csv"
 
 adjp <- 0.01
 
+## convert mean expression to log scale for MA plot and correlation plot
 ahrko$baseMean_log <- log2(ahrko$baseMean+1);
 
-ahrko$Entrez <- as.character(ahrko$Entrez);
 
+## Pulling out gene names to filter out riken clones and pseudogenes
+ahrko$Entrez <- as.character(ahrko$Entrez);
 
 ahrko$Genename <- mapIds(org.Mm.eg.db, 
                          ahrko$Entrez,
@@ -92,12 +94,12 @@ ahrko_sig_dn <- ahrko_sig_dn[order(ahrko_sig_dn$log2FoldChange),];
 
 ahrko_sig <- rbind(ahrko_sig_up,ahrko_sig_dn);
 
-
+## pulling out top 15 genes by log2FC to highlight on volcano plot
 top_15_up <- ahrko_sig_up[1:10,];
 top_15_dn <- ahrko_sig_dn[1:10,];
 
 
-## Make ma plot
+## Make MA plot
 ma_plot <- ggplot(ahrko_noGm_riken, 
             aes(baseMean_log, 
                 log2FoldChange)
@@ -142,6 +144,8 @@ ma_plot;
 
 top_15_up_dn <- rbind(top_15_up,top_15_dn);
 
+
+## Make volcano plot
 volcano_plot <- ggplot(ahrko_noGm_riken, 
          aes(log2FoldChange, 
              Neg_log_p_val,
@@ -217,6 +221,7 @@ rownames(norm_counts) <- norm_counts$X;
 
 norm_counts <- norm_counts[,-c(1)];
 
+## getting the average CPM across samples by genotype
 avg_wt <- apply(norm_counts[,c(1:6)],1,mean);
 
 avg_ko <- apply(norm_counts[,c(7:12)],1,mean);
@@ -229,6 +234,7 @@ avg_ko <- as.data.frame(avg_ko);
 
 rownames(ahrko_noGm_riken) <- ahrko_noGm_riken$Ensembl;
 
+## combining average expression with DE table
 ahrko_with_exp <- cbind(ahrko_noGm_riken,avg_wt[rownames(ahrko_noGm_riken),]);
 
 ahrko_with_exp <- cbind(ahrko_with_exp,avg_ko[rownames(ahrko_with_exp),]);
@@ -240,7 +246,7 @@ ahrko_with_exp$WT_log <- log2(ahrko_with_exp$WT+1);
 ahrko_with_exp$KO_log <- log2(ahrko_with_exp$AHRko+1);
 
 
-
+## Subsetting the DE table for up and down genes to pull out sig genes
 ahrko_sig_up <- subset(ahrko_with_exp,
                     ahrko_with_exp$log2FoldChange>1 & ahrko_with_exp$padj < 0.01
                     );
@@ -249,12 +255,12 @@ ahrko_sig_dn <- subset(ahrko_with_exp,
                     ahrko_with_exp$log2FoldChange < -1 & ahrko_with_exp$padj < 0.01
                     );
 
-
+## generating the up/down direction variable to color the genes in the plot
 ahrko_sig_up$ahrko_Direction <- ifelse(ahrko_sig_up$log2FoldChange > 0,"Up");
 
 ahrko_sig_dn$ahrko_Direction <- ifelse(ahrko_sig_dn$log2FoldChange < 0,"Down");
 
-
+## sorting by adjusted p value to pull out the top 15 genes to highlight in plot
 ahrko_sig_up <- ahrko_sig_up[order(ahrko_sig_up$padj),];
 ahrko_sig_dn <- ahrko_sig_dn[order(ahrko_sig_dn$padj),];
 
@@ -263,8 +269,10 @@ top_15_dn <- ahrko_sig_dn[1:15,];
 
 top_15_up_dn <- rbind(top_15_up,top_15_dn);
 
+## removing genes with NULL for symbol
 top_15_up_dn_no_null <- top_15_up_dn[top_15_up_dn$Symbol != "NULL",];
 
+## making the correlation plot
 cor_plot <- ggplot(ahrko_with_exp, aes(WT_log, KO_log)
           ) + theme_classic(base_size = 16) +
   geom_point(data = ahrko_with_exp, 
@@ -315,12 +323,14 @@ cor_plot <- ggplot(ahrko_with_exp, aes(WT_log, KO_log)
 
 cor_plot
 
+
+## saving correlation plot to file
 pdf(file = "Correlation plot for AHRKO vs WT.pdf",width = 10,height = 13);
 cor_plot;
 dev.off();
 
 
-
+## saving session info
 sink("Plots_sesion_info.txt");
 sessionInfo();
 sink();
