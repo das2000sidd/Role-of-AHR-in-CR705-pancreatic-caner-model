@@ -14,10 +14,10 @@ library("org.Mm.eg.db");
 wt_samples <- setNames(lapply(
                     			c(paste0("G3M",c(1,3,4,6,7,9))), 
                     			function(x) read.table(paste0(x, ".htseq.counts.txt"), 
-                    								   header = FALSE, 
-                    								   row.names = 1
-                    								   )
-                    				), 
+                    			header = FALSE, 
+                    			row.names = 1
+                    			)
+                    			), 
                     			c(paste0("G3M",
                     					c(1,3,4,6,7,9)
                     					)
@@ -31,14 +31,14 @@ colnames(combined_wt) <- paste0("WT",1:6);
 mutant_samples <- setNames(lapply(
                        			   c(paste0("G4M",c(3,4,5,7,9))), 
                        			   function(x) read.table(paste0(x, ".htseq.counts.txt"), 
-                       									 header = FALSE, 
-                       									 row.names = 1
-                       									 )
-                       						), 
+                       				header = FALSE, 
+                       				row.names = 1
+                       				)
+                       				), 
                       				c(paste0("G4M",
-                      						c(3,4,6,7,9)
-                      						)
-                      			      )
+                      					c(3,4,6,7,9)
+                      					)
+                      			  )
                       		);
 
 
@@ -51,8 +51,8 @@ colnames(combined_ahrko) <- paste0("AHRKO",1:5);
 
 
 all_counts_combined <- cbind(combined_wt,
-                          	 combined_ahrko[rownames(combined_wt),]
-                          	)
+	combined_ahrko[rownames(combined_wt),]
+    )
 
 
 
@@ -88,9 +88,9 @@ head(assay(vsd), 3);
 ###PCA plot***
 
 pca.plot <- plotPCA(vsd, 
-        intgroup = c("condition")
-        ) + 
-        ggtitle("PCA by genotype");
+	intgroup = c("condition")
+	) + 
+	ggtitle("PCA by genotype");
 
 
 ## MDS plot using the VST data
