@@ -85,6 +85,7 @@ write.csv(wt_vs_ahrko_dn[,-c(10)],
 ## Enrichment analysis
 msigdbr_species()
 
+## Use the msigdbr package to pull out the term to gene mapping for mouse genome
 mm_msigdb_df <- msigdbr(species = "Mus musculus");
 
 
@@ -128,6 +129,7 @@ GO_ora_results <- enricher(
 View(GO_ora_results@result)
 
 
+## Visualise the top 15 most enriched go terms  
 enrich_plot_go <- enrichplot::dotplot(GO_ora_results, 
                                    showCategory = 15,
                                    font.size = 6,
@@ -168,7 +170,7 @@ Reactome_ora_results <- enricher(
 
 View(Reactome_ora_results@result)
 
-
+## Visualise the top 15 most enriched reactome pathway terms  
 enrich_plot_reac <- enrichplot::dotplot(Reactome_ora_results, 
                                    showCategory = 15,
                                    font.size = 6,
