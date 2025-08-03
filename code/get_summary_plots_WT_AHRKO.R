@@ -232,9 +232,10 @@ avg_ko <- as.data.frame(avg_ko);
 
 
 
-rownames(ahrko_noGm_riken) <- ahrko_noGm_riken$Ensembl;
 
 ## combining average expression with DE table
+rownames(ahrko_noGm_riken) <- ahrko_noGm_riken$Ensembl;
+
 ahrko_with_exp <- cbind(ahrko_noGm_riken,avg_wt[rownames(ahrko_noGm_riken),]);
 
 ahrko_with_exp <- cbind(ahrko_with_exp,avg_ko[rownames(ahrko_with_exp),]);
