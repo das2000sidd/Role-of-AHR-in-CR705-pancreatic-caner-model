@@ -50,9 +50,8 @@ all_counts_combined <- cbind(combined_wt,
 
 
 condition_df <- as.data.frame(c(rep("WT",6),
-								rep("AHRKO",5)
-                             	)
-                             );
+rep("AHRKO",5)
+));
 
 
 colnames(condition_df) <- "condition";
