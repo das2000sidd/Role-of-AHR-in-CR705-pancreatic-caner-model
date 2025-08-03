@@ -28,14 +28,11 @@ colnames(combined_wt) <- paste0("WT",1:6);
 mutant_samples <- setNames(lapply(
 	c(paste0("G4M",c(3,4,5,7,9))), 
 	function(x) read.table(paste0(x, ".htseq.counts.txt"), 
-							header = FALSE, 
-							row.names = 1
-							)
-							), 
-							c(paste0("G4M",c(3,4,6,7,9)
-							)
-						)
-					);
+	header = FALSE, 
+	row.names = 1)), 
+	c(paste0("G4M",c(3,4,6,7,9))
+	)
+);
 
 
 combined_ahrko <- do.call(cbind, 
