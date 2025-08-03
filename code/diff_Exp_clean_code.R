@@ -15,8 +15,8 @@ wt_samples <- setNames(lapply(
 	c(paste0("G3M",c(1,3,4,6,7,9))), 
 	function(x) read.table(paste0(x, ".htseq.counts.txt"), 
 	header = FALSE, 
-	row.names = 1
-	)), c(paste0("G3M",
+	row.names = 1)), 
+	c(paste0("G3M",
 	c(1,3,4,6,7,9))
 	)
 );
