@@ -88,9 +88,8 @@ head(assay(vsd), 3);
 ###PCA plot***
 
 pca.plot <- plotPCA(vsd, 
-	intgroup = c("condition")
-	) + 
-	ggtitle("PCA by genotype");
+intgroup = c("condition")) +
+ggtitle("PCA by genotype");
 
 
 ## MDS plot using the VST data
@@ -106,14 +105,14 @@ dds <- DESeq(dds);
 
 ## Calling result to get differential expression table
 res_AHRKO_vs_WT <- results(dds, 
-                           contrast = c("condition",
-                                        "AHRKO",
-                                        "WT"
-                                        ),
-                           pAdjustMethod = "BH",
-                           cooksCutoff = FALSE,
-                           independentFiltering = FALSE
-                           );
+contrast = c("condition",
+			 "AHRKO",
+			 "WT"
+			 ),
+pAdjustMethod = "BH",
+cooksCutoff = FALSE,
+independentFiltering = FALSE
+);
 
 
 res_AHRKO_vs_WT_df <- as.data.frame(res_AHRKO_vs_WT);
