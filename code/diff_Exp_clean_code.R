@@ -45,14 +45,14 @@ colnames(combined_ahrko) <- paste0("AHRKO",1:5);
 
 all_counts_combined <- cbind(combined_wt,
 	combined_ahrko[rownames(combined_wt),]
-    )
+    );
 
 
 
 condition_df <- as.data.frame(c(rep("WT",6),
-                             	rep("AHRKO",5)
+								rep("AHRKO",5)
                              	)
-                           	);
+                             );
 
 
 colnames(condition_df) <- "condition";
@@ -81,8 +81,8 @@ head(assay(vsd), 3);
 ###PCA plot***
 
 pca.plot <- plotPCA(vsd, 
-intgroup = c("condition")) +
-ggtitle("PCA by genotype");
+intgroup = c("condition")
+) + ggtitle("PCA by genotype");
 
 
 ## MDS plot using the VST data
@@ -91,17 +91,14 @@ pca.plot;
 dev.off();
 
 
-
+## blah blah blah
 ## Linear mdoel fitting
 dds <- DESeq(dds);
 
 
 ## Calling result to get differential expression table
 res_AHRKO_vs_WT <- results(dds, 
-contrast = c("condition",
-			 "AHRKO",
-			 "WT"
-			 ),
+contrast = c("condition","AHRKO","WT"),
 pAdjustMethod = "BH",
 cooksCutoff = FALSE,
 independentFiltering = FALSE
@@ -120,7 +117,7 @@ res_AHRKO_vs_WT_df$Entrez <- mapIds(org.Mm.eg.db,
                                     keytype="ENSEMBL", 
                                     column="ENTREZID",
                                     multiVals = "first"
-                                  );
+                                   );
 
 res_AHRKO_vs_WT_df$Symbol <- mapIds(org.Mm.eg.db, 
                                     res_AHRKO_vs_WT_df$Entrez,
@@ -133,7 +130,8 @@ res_AHRKO_vs_WT_df$Symbol <- mapIds(org.Mm.eg.db,
 res_AHRKO_vs_WT_df$Genename <- mapIds(org.Mm.eg.db, 
                                       res_AHRKO_vs_WT_df$Entrez,
                                       keytype="ENTREZID", 
-                                      column="GENENAME");
+                                      column="GENENAME"
+                                      );
 
 
 res_AHRKO_vs_WT_df$Entrez <- as.character(res_AHRKO_vs_WT_df$Entrez);
@@ -146,12 +144,12 @@ res_AHRKO_vs_WT_df$Genename <- as.character(res_AHRKO_vs_WT_df$Genename);
 
 up_keeping_AHR_KO_1 <- subset(res_AHRKO_vs_WT_df,
                               res_AHRKO_vs_WT_df$log2FoldChange > 1 & 
-                                res_AHRKO_vs_WT_df$padj < 0.01
+                              res_AHRKO_vs_WT_df$padj < 0.01
                               );
 
 dn_keeping_AHR_KO_1 <- subset(res_AHRKO_vs_WT_df,
                               res_AHRKO_vs_WT_df$log2FoldChange < -1 & 
-                                res_AHRKO_vs_WT_df$padj < 0.01
+                              res_AHRKO_vs_WT_df$padj < 0.01
                               );
 
 
